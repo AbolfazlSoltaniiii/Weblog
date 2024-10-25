@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>وبلاگ</title>
 
@@ -23,6 +24,15 @@
         .bg-dark-primary {
             background-color: rgb(45 53 75) !important;
         }
+
+        .list {
+            font-size: 18px;
+        }
+
+        .list:hover {
+            font-size: 20px;
+            border-bottom: 1px solid red;
+        }
     </style>
 </head>
 <body>
@@ -35,15 +45,30 @@
                 <p class="fs-3">پست ها</p>
             </div>
 
-            <div class="list-group list-group-flush">
-                <li class="list-group-item bg-transparent text-white">تایید شده</li>
-                <li class="list-group-item bg-transparent text-white">در حال بررسی</li>
-                <li class="list-group-item bg-transparent text-white">رد شده</li>
+            <div class="list-group list-group-flush gap-3">
+                <a class="list-group-item bg-transparent text-white list" data-status="approved" href="#">تایید شده</a>
+                <a class="list-group-item bg-transparent text-white list" data-status="pending" href="#">در حال
+                    بررسی</a>
+                <a class="list-group-item bg-transparent text-white list border-bottom" data-status="rejected" href="#">رد
+                    شده</a>
             </div>
         </div>
 
-        <div class="col-9"></div>
+        <div class="col-9">
+            <table id="data-container" class="table table-striped">
+                <thead>
+                <tr>
+                    <th>ردیف</th>
+                    <th>عنوان</th>
+                    <th>ایجاد کننده</th>
+                </tr>
+                </thead>
+                <tbody id="tbody"></tbody>
+            </table>
+        </div>
     </div>
 </div>
+
+<script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>
