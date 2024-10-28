@@ -24,9 +24,7 @@ links.forEach(link => {
                 }
             })
             .then(data => {
-                data.forEach(function (item) {
-                    createPostFields(item)
-                });
+                createPostFields(data)
             })
             .catch(error => {
                 alert('هنگام واکشی اطلاعات خطایی رخ داده است.')
@@ -35,23 +33,20 @@ links.forEach(link => {
     });
 });
 
-function createPostFields(item) {
-    let fields = ['id', 'title'],
-        row = document.createElement('tr');
+function createPostFields(data) {
+    data.forEach((item, index) => {
+        const row = document.createElement('tr');
 
-    for (let i = 0; i < fields.length; i++) {
-        let field = fields[i];
+        let dataContent = [index + 1, item['title'], 'مدیر سیستم'];
 
-        const cell = document.createElement('td');
-        cell.textContent = item[field];
+        for (let i = 0; i < dataContent.length; i++) {
+            const cell = document.createElement('td');
 
-        row.appendChild(cell);
-    }
+            cell.textContent = dataContent[i];
+            row.appendChild(cell);
 
-    const creatorCell = document.createElement('td')
-    creatorCell.textContent = 'مدیر سیستم'
+        }
 
-    row.appendChild(creatorCell);
-
-    body.appendChild(row);
+        body.appendChild(row);
+    });
 }
