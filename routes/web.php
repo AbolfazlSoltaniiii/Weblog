@@ -8,3 +8,4 @@ Route::get('/', static function () {
 });
 
 Route::post('post/index', [PostController::class, 'index']);
+Route::resource('post', PostController::class);
