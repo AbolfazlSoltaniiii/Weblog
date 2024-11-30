@@ -7,7 +7,7 @@
 
     <title>وبلاگ</title>
 
-    {{--bootstrap cdn--}}
+    {{-- bootstrap cdn --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -31,13 +31,44 @@
 
         .list:hover {
             font-size: 20px;
-            border-bottom: 1px solid red;
+            border-bottom: 1px solid #4a568f !important;
         }
     </style>
 </head>
+
 <body>
 <div class="container-fluid">
-    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" data-bs-backdrop="static">
+    <div class="modal" tabindex="-1" id="editModal" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="d-flex">
+                        <i class="bi bi-pencil-square text-primary fs-4"></i>
+                        &nbsp;
+                        <h5 class="modal-title">ویرایش پست</h5>
+                    </div>
+                    <button type="button" class="btn-close m-0" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="postCreator" class="form-label"> ایجاد کننده:&nbsp; &nbsp;
+                            <span class="text-danger fw-bold">مدیر سیستم</span>
+                        </label>
+                        <br>
+
+                        <label for="postTitle" class="form-label mt-3">عنوان:</label>
+                        <input type="email" class="form-control" id="postTitle">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="saveButton" data-bs-dismiss="modal" data-id="" onclick="editItem(this)">ذخیره</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" tabindex="-1" id="confirmDeleteModal" data-bs-backdrop="static">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -92,6 +123,17 @@
                 <tbody id="tbody"></tbody>
             </table>
 
+            <div id="success-edit-toast" class="toast text-bg-success m-2 position-absolute bottom-0 start-0"
+                 role="alert">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        اطلاعات با موفقیت ویرایش شد.
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-auto m-2 p-2"
+                            data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+
             <div id="success-delete-toast" class="toast text-bg-success m-2 position-absolute bottom-0 start-0"
                  role="alert">
                 <div class="d-flex">
@@ -109,4 +151,5 @@
 
 <script src="{{ asset('js/app.js') }}"></script>
 </body>
+
 </html>
