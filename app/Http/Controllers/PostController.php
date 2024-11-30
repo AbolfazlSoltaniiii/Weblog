@@ -37,6 +37,21 @@ class PostController extends Controller
     /**
      * @throws JsonException
      */
+    public function store()
+    {
+        $request = json_decode($this->request->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        $title = $request['title'] ?? null;
+
+        return $this->post->query()
+            ->create([
+                'post_status_id' => 2,
+                'title' => $title
+            ]);
+    }
+
+    /**
+     * @throws JsonException
+     */
     public function update($id): ?bool
     {
         $request = json_decode($this->request->getContent(), true, 512, JSON_THROW_ON_ERROR);

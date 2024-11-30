@@ -1,15 +1,35 @@
 let links = document.querySelectorAll(".list-group-item"),
     body = document.querySelector("#tbody");
 
+// event for remove every input when creating new post
+document.addEventListener('shown.bs.modal', function (event) {
+    if (event.target.id === 'addModal') {
+        event.target.querySelectorAll('input').forEach(input => input.value = '');
+    }
+});
+
+
 links.forEach((link) => {
     link.addEventListener("click", function (event) {
         event.preventDefault();
+
+        setLinksStyle(links, this)
 
         let status = this.getAttribute("data-status");
 
         reloadData(status)
     });
 });
+
+let setLinksStyle = (links, selectedLink) => {
+    links.forEach((el) => {
+        el.style.fontWeight = 'normal'
+        el.style.color = 'yellow';
+    });
+
+    selectedLink.style.fontWeight = 'bold';
+    selectedLink.style.color = 'white';
+}
 
 let getPostData = (status) => {
     fetch(`/post/index`, {
@@ -144,4 +164,31 @@ let reloadData = (itemStatus) => {
     document.querySelector("#tbody").innerHTML = "";
 
     getPostData(itemStatus);
+}
+
+let onCreatePost = () => {
+    let postTitleField = document.querySelector('#title'),
+        allPostStatus = document.querySelectorAll('.list'),
+        postTitle = postTitleField.value;
+
+    fetch(`post/`, {
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content"), // for 419 error
+        },
+        body: JSON.stringify({
+            title: postTitle
+        })
+    }).then((response) => {
+        if (!response.ok) return;
+
+        new bootstrap.Toast(
+            document.querySelector("#success-add-toast")
+        ).show();
+
+        // show pending status data
+        allPostStatus[1].click();
+    });
 }
