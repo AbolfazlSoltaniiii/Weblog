@@ -31,7 +31,7 @@
 
         .list:hover {
             font-size: 20px;
-            border-bottom: 1px solid red;
+            border-bottom: 1px solid #4a568f !important;
         }
     </style>
 </head>
@@ -61,7 +61,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">ذخیره</button>
+                    <button type="button" class="btn btn-primary" id="saveButton" data-bs-dismiss="modal" data-id="" onclick="editItem(this)">ذخیره</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
                 </div>
             </div>
@@ -96,8 +96,10 @@
 
             <div class="list-group list-group-flush gap-3">
                 <a class="list-group-item bg-transparent text-white list" data-status="approved" href="#">تایید شده</a>
-                <a class="list-group-item bg-transparent text-white list" data-status="pending" href="#">در حال بررسی</a>
-                <a class="list-group-item bg-transparent text-white list border-bottom" data-status="rejected" href="#">رد شده</a>
+                <a class="list-group-item bg-transparent text-white list" data-status="pending" href="#">در حال
+                    بررسی</a>
+                <a class="list-group-item bg-transparent text-white list border-bottom" data-status="rejected" href="#">رد
+                    شده</a>
             </div>
 
             <div class="mt-auto d-flex justify-content-end">
@@ -120,6 +122,17 @@
                 </thead>
                 <tbody id="tbody"></tbody>
             </table>
+
+            <div id="success-edit-toast" class="toast text-bg-success m-2 position-absolute bottom-0 start-0"
+                 role="alert">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        اطلاعات با موفقیت ویرایش شد.
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-auto m-2 p-2"
+                            data-bs-dismiss="toast"></button>
+                </div>
+            </div>
 
             <div id="success-delete-toast" class="toast text-bg-success m-2 position-absolute bottom-0 start-0"
                  role="alert">

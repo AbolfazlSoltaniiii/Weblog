@@ -34,6 +34,20 @@ class PostController extends Controller
             ->get();
     }
 
+    /**
+     * @throws JsonException
+     */
+    public function update($id): ?bool
+    {
+        $request = json_decode($this->request->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+        return $this->post->query()
+            ->find($id)
+            ?->update([
+                'title' => $request['title']
+            ]);
+    }
+
     public function destroy($id): ?bool
     {
         return $this->post->query()

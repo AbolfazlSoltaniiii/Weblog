@@ -7,9 +7,7 @@ links.forEach((link) => {
 
         let status = this.getAttribute("data-status");
 
-        body.innerHTML = "";
-
-        getPostData(status);
+        reloadData(status)
     });
 });
 
@@ -61,13 +59,17 @@ let createPostFields = (data) => {
 let createEditCell = (row, item) => {
     const cell = document.createElement("td");
 
-    cell.innerHTML = `<button class="border-0 bg-transparent" data-id=${item['id']} title="ویرایش" data-bs-toggle="modal" data-bs-target="#editModal" onclick="fillModal('${item['title']}')"><i class="bi bi-pencil-square text-primary fs-4"></i></button>`;
+    cell.innerHTML = `<button class="border-0 bg-transparent" title="ویرایش" data-bs-toggle="modal" data-bs-target="#editModal" onclick="fillModal('${item['title']}', ${item['id']}, '${item['post_status_code']}')"><i class="bi bi-pencil-square text-primary fs-4"></i></button>`;
 
     row.appendChild(cell);
 }
 
-let fillModal = (title) => {
-    let titleField = document.querySelector('#postTitle');
+let fillModal = (title, id, status) => {
+    let titleField = document.querySelector('#postTitle'),
+        saveButton = document.querySelector('#saveButton');
+
+    saveButton.setAttribute('data-id', id);
+    saveButton.setAttribute('data-status', status);
 
     titleField.value = title;
 }
@@ -99,17 +101,47 @@ let checkDeleteItem = (button) => {
                     .getAttribute("content"), // for 419 error
             },
         }).then((response) => {
-            if (response.ok) {
-                confirmDeleteModal.hide();
+            if (!response.ok) return;
 
-                new bootstrap.Toast(
-                    document.querySelector("#success-delete-toast")
-                ).show();
+            confirmDeleteModal.hide();
 
-                document.querySelector("#tbody").innerHTML = "";
+            new bootstrap.Toast(
+                document.querySelector("#success-delete-toast")
+            ).show();
 
-                getPostData(itemStatus);
-            }
+            reloadData(itemStatus)
         });
     };
+}
+
+let editItem = (button) => {
+    let postTitle = document.querySelector('#postTitle').value,
+        itemId = button.getAttribute('data-id'),
+        itemStatus = button.getAttribute('data-status');
+
+    fetch(`post/${itemId}`, {
+        method: "PUT",
+        headers: {
+            "X-CSRF-TOKEN": document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content"), // for 419 error
+        },
+        body: JSON.stringify({
+            title: postTitle
+        })
+    }).then((response) => {
+        if (!response.ok) return;
+
+        new bootstrap.Toast(
+            document.querySelector("#success-edit-toast")
+        ).show();
+
+        reloadData(itemStatus)
+    });
+}
+
+let reloadData = (itemStatus) => {
+    document.querySelector("#tbody").innerHTML = "";
+
+    getPostData(itemStatus);
 }
