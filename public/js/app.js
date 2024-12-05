@@ -70,7 +70,7 @@ let createPostFields = (data) => {
         }
 
         createEditCell(row, item);
-        createDeleteCell(row, item["id"], item["post_status_code"]);
+        createDeleteCell(row, item["id"], item["post_status"]["code"]);
 
         setActiveRowListener(row);
 
@@ -81,7 +81,7 @@ let createPostFields = (data) => {
 let createEditCell = (row, item) => {
     const cell = document.createElement("td");
 
-    cell.innerHTML = `<button class="border-0 bg-transparent" title="ویرایش" data-bs-toggle="modal" data-bs-target="#editModal" onclick="fillModal('${item['title']}', ${item['id']}, '${item['post_status_code']}')"><i class="bi bi-pencil-square text-primary fs-4"></i></button>`;
+    cell.innerHTML = `<button class="border-0 bg-transparent" title="ویرایش" data-bs-toggle="modal" data-bs-target="#editModal" onclick="fillModal('${item['title']}', ${item['id']}, '${item["post_status"]["code"]}')"><i class="bi bi-pencil-square text-primary fs-4"></i></button>`;
 
     row.appendChild(cell);
 }
