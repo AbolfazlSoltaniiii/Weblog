@@ -143,7 +143,7 @@
         </div>
 
         <div class="col-9">
-            <table id="data-container" class="table table-striped">
+            <table id="data-container" class="table table-striped table-hover">
                 <thead>
                 <tr>
                     <th>ردیف</th>

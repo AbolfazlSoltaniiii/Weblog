@@ -51,7 +51,7 @@ let getPostData = (status) => {
         .then((data) => {
             createPostFields(data);
         })
-        .catch((error) => {
+        .catch(() => {
             alert("هنگام واکشی اطلاعات خطایی رخ داده است.");
         });
 }
@@ -71,6 +71,8 @@ let createPostFields = (data) => {
 
         createEditCell(row, item);
         createDeleteCell(row, item["id"], item["post_status_code"]);
+
+        setActiveRowListener(row);
 
         body.appendChild(row);
     });
@@ -190,5 +192,16 @@ let onCreatePost = () => {
 
         // show pending status data
         allPostStatus[1].click();
+    });
+}
+
+let setActiveRowListener = (row) => {
+    row.addEventListener("click", () => {
+        let activeRow = document.querySelector('.table-active');
+
+        if (activeRow)
+            activeRow.classList.remove("table-active");
+
+        row.classList.add("table-active");
     });
 }
