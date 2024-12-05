@@ -27,10 +27,8 @@ class PostController extends Controller
         $request = json_decode($this->request->getContent(), true, 512, JSON_THROW_ON_ERROR);
         $status = $request['status'] ?? null;
 
-        return $this->post->query()
-            ->join('post_status', 'post_status.id', '=', 'posts.post_status_id')
-            ->where('post_status.code', $status)
-            ->select('posts.*', 'post_status.code as post_status_code', 'post_status.title as post_status_title')
+        return $this->post->with('postStatus')
+            ->whereHas('postStatus', fn($query) => $query->where('code', $status))
             ->get();
     }
 

@@ -14,13 +14,16 @@ class Post extends Model
 
     protected $table = 'posts';
 
-    protected $fillable = [
-        'post_status_id',
-        'title',
-        'content',
+    protected $hidden = [
         'created_at',
         'updated_at',
         'deleted_at'
+    ];
+
+    protected $fillable = [
+        'post_status_id',
+        'title',
+        'content'
     ];
 
     public function postStatus(): BelongsTo

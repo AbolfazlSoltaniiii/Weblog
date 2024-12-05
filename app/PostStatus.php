@@ -14,6 +14,12 @@ class PostStatus extends Model
 
     protected $table = 'post_status';
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at'
+    ];
+
     protected $fillable = [
         'code',
         'title'
