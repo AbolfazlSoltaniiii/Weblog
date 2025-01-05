@@ -81,19 +81,22 @@ let createPostFields = (data) => {
 let createEditCell = (row, item) => {
     const cell = document.createElement("td");
 
-    cell.innerHTML = `<button class="border-0 bg-transparent" title="ویرایش" data-bs-toggle="modal" data-bs-target="#editModal" onclick="fillModal('${item['title']}', ${item['id']}, '${item["post_status"]["code"]}')"><i class="bi bi-pencil-square text-primary fs-4"></i></button>`;
+    cell.innerHTML = `<button class="border-0 bg-transparent" title="ویرایش" data-bs-toggle="modal" data-bs-target="#editModal" data-item='${JSON.stringify(item)}' onclick="fillModal(this)"><i class="bi bi-pencil-square text-primary fs-4"></i></button>`;
 
     row.appendChild(cell);
 }
 
-let fillModal = (title, id, status) => {
+let fillModal = (button) => {
     let titleField = document.querySelector('#postTitle'),
-        saveButton = document.querySelector('#saveButton');
+        contentField = document.querySelector('#postContent'),
+        saveButton = document.querySelector('#saveButton'),
+        editItem = JSON.parse(button.getAttribute('data-item'));
 
-    saveButton.setAttribute('data-id', id);
-    saveButton.setAttribute('data-status', status);
+    saveButton.setAttribute('data-id', editItem['id']);
+    saveButton.setAttribute('data-status', editItem['post_status']['code']);
 
-    titleField.value = title;
+    titleField.value = editItem['title'];
+    contentField.value = editItem['content'];
 }
 
 let createDeleteCell = (row, itemId, itemStatus) => {
@@ -127,9 +130,7 @@ let checkDeleteItem = (button) => {
 
             confirmDeleteModal.hide();
 
-            new bootstrap.Toast(
-                document.querySelector("#success-delete-toast")
-            ).show();
+            showToast('پست با موفقیت حذف شد.');
 
             reloadData(itemStatus)
         });
@@ -154,9 +155,7 @@ let editItem = (button) => {
     }).then((response) => {
         if (!response.ok) return;
 
-        new bootstrap.Toast(
-            document.querySelector("#success-edit-toast")
-        ).show();
+        showToast('اطلاعات پست با موفقیت ویرایش شد.');
 
         reloadData(itemStatus)
     });
@@ -169,13 +168,26 @@ let reloadData = (itemStatus) => {
 }
 
 let onCreatePost = () => {
-    let postTitleField = document.querySelector('#title'),
+    let postForm = document.getElementById("postForm"),
+        postTitleField = document.querySelector('#title'),
         allPostStatus = document.querySelectorAll('.list'),
         postTitle = postTitleField.value;
+
+    let addModal = bootstrap.Modal.getInstance(
+        document.querySelector("#addModal")
+    );
+
+    postTitleField.classList.remove("is-invalid");
+
+    if (!postForm.checkValidity()) {
+        postTitleField.classList.add("is-invalid");
+        return;
+    }
 
     fetch(`post/`, {
         method: "POST",
         headers: {
+            "Content-Type": "application/json",
             "X-CSRF-TOKEN": document
                 .querySelector('meta[name="csrf-token"]')
                 .getAttribute("content"), // for 419 error
@@ -183,15 +195,26 @@ let onCreatePost = () => {
         body: JSON.stringify({
             title: postTitle
         })
-    }).then((response) => {
-        if (!response.ok) return;
+    }).then(async (response) => {
+        if (response.ok) {
+            addModal.hide()
+            showToast('پست جدید با موفقیت ایجاد شد.')
 
-        new bootstrap.Toast(
-            document.querySelector("#success-add-toast")
-        ).show();
+            // show pending status data
+            allPostStatus[1].click();
+        } else {
+            let errorData = await response.json(),
+                errorTitle = errorData.errors.title;
 
-        // show pending status data
-        allPostStatus[1].click();
+            if (!errorTitle || !errorTitle.length) return;
+
+            postTitleField.classList.add("is-invalid");
+            document.querySelector(".invalid-feedback").textContent = errorTitle[0];
+        }
+    }).catch(() => {
+        let className = "toast bg-danger text-white m-2 position-absolute bottom-0 start-0";
+
+        showToast("مشکلی در ارتباط با سرور رخ داده است.", "failure", className);
     });
 }
 
@@ -204,4 +227,25 @@ let setActiveRowListener = (row) => {
 
         row.classList.add("table-active");
     });
+}
+
+let showToast = (message, type = 'success', className = null) => {
+    let mainContent = document.querySelector("#mainContent"),
+        div = document.createElement("div");
+
+    div.className = "toast text-bg-success m-2 position-absolute bottom-0 start-0"
+
+    if (type !== 'success') {
+        div.className = className;
+    }
+
+    div.innerHTML = `
+        <div class="d-flex">
+            <div class="toast-body">${message}</div>
+            <button type="button" class="btn-close btn-close-white me-auto m-2 p-2" data-bs-dismiss="toast"></button>
+        </div>
+    `;
+
+    mainContent.appendChild(div)
+    new bootstrap.Toast(div).show();
 }

@@ -33,6 +33,15 @@
             font-size: 20px;
             border-bottom: 1px solid #4a568f !important;
         }
+
+        #mainContent {
+            max-height: 100vh;
+            overflow-y: auto;
+        }
+
+        #data-container {
+            table-layout: fixed;
+        }
     </style>
 </head>
 
@@ -50,19 +59,28 @@
                     <button type="button" class="btn-close m-0" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label"> ایجاد کننده:&nbsp; &nbsp;
-                            <span class="text-danger fw-bold">مدیر سیستم</span>
-                        </label>
-                        <br>
-
-                        <label for="title" class="form-label mt-3">عنوان:</label>
-                        <input type="text" class="form-control" id="title">
-                    </div>
+                    <form id="postForm" novalidate>
+                        <div class="mb-3">
+                            <label class="form-label">
+                                ایجاد کننده:&nbsp; &nbsp;
+                                <span class="text-danger fw-bold">مدیر سیستم</span>
+                            </label>
+                            <br>
+                            <label for="title" class="form-label mt-3">عنوان:</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="title"
+                                name="title"
+                                required>
+                            <div class="invalid-feedback">
+                                فیلد عنوان الزامی است.
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="onCreatePost()">ذخیره
-                    </button>
+                    <button type="button" class="btn btn-primary" onclick="onCreatePost()">ذخیره</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
                 </div>
             </div>
@@ -70,7 +88,7 @@
     </div>
 
     <div class="modal" tabindex="-1" id="editModal" data-bs-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-fullscreen">
             <div class="modal-content">
                 <div class="modal-header">
                     <div class="d-flex">
@@ -80,7 +98,8 @@
                     </div>
                     <button type="button" class="btn-close m-0" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body">
+
+                <div class="modal-body d-flex flex-column">
                     <div class="mb-3">
                         <label class="form-label"> ایجاد کننده:&nbsp; &nbsp;
                             <span class="text-danger fw-bold">مدیر سیستم</span>
@@ -89,8 +108,13 @@
 
                         <label for="postTitle" class="form-label mt-3">عنوان:</label>
                         <input type="text" class="form-control" id="postTitle">
+
+                        <label for="postContent" class="form-label mt-3">محتوا:</label>
                     </div>
+
+                    <textarea class="form-control flex-grow-1" id="postContent"></textarea>
                 </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" id="saveButton" data-bs-dismiss="modal" data-id=""
                             onclick="editItem(this)">ذخیره
@@ -142,17 +166,18 @@
             </div>
         </div>
 
-        <div class="col-9">
+        <div class="col-9" id="mainContent">
             <table id="data-container" class="table table-striped table-hover">
                 <thead>
-                <tr>
-                    <th>ردیف</th>
-                    <th>عنوان</th>
-                    <th>ایجاد کننده</th>
-                    <th style="width: 50px;"></th>
-                    <th style="width: 50px"></th>
-                </tr>
+                    <tr>
+                        <th style="width: 100px;">ردیف</th>
+                        <th>عنوان</th>
+                        <th>ایجاد کننده</th>
+                        <th style="width: 50px;"></th>
+                        <th style="width: 50px"></th>
+                    </tr>
                 </thead>
+
                 <tbody id="tbody"></tbody>
 
                 <button class="btn btn-success rounded-circle position-absolute bottom-0 m-4 px-3"
@@ -160,40 +185,6 @@
                     <i class="bi bi-plus fs-2"></i>
                 </button>
             </table>
-
-            <div id="success-add-toast" class="toast text-bg-success m-2 position-absolute bottom-0 start-0"
-                 role="alert">
-                <div class="d-flex">
-                    <div class="toast-body">
-                        پست جدید با موفقیت ایجاد شد.
-                    </div>
-                    <button type="button" class="btn-close btn-close-white me-auto m-2 p-2"
-                            data-bs-dismiss="toast"></button>
-                </div>
-            </div>
-
-            <div id="success-edit-toast" class="toast text-bg-success m-2 position-absolute bottom-0 start-0"
-                 role="alert">
-                <div class="d-flex">
-                    <div class="toast-body">
-                        اطلاعات پست با موفقیت ویرایش شد.
-                    </div>
-                    <button type="button" class="btn-close btn-close-white me-auto m-2 p-2"
-                            data-bs-dismiss="toast"></button>
-                </div>
-            </div>
-
-            <div id="success-delete-toast" class="toast text-bg-success m-2 position-absolute bottom-0 start-0"
-                 role="alert">
-                <div class="d-flex">
-                    <div class="toast-body">
-                        پست با موفقیت حذف شد.
-                    </div>
-                    <button type="button" class="btn-close btn-close-white me-auto m-2 p-2"
-                            data-bs-dismiss="toast"></button>
-                </div>
-            </div>
-
         </div>
     </div>
 </div>
