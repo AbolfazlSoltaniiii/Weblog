@@ -159,11 +159,12 @@
                     شده</a>
             </div>
 
-            <div class="mt-auto d-flex justify-content-end">
-                <button type="button" class="btn btn-secondary fs-3" title="sign out">
+            <form method="post" action="/logout" class="mt-auto d-flex justify-content-end">
+                @csrf
+                <button class="btn btn-secondary fs-3" title="logout">
                     <i class="bi bi-box-arrow-left"></i>
                 </button>
-            </div>
+            </form>
         </div>
 
         <div class="col-9" id="mainContent">
