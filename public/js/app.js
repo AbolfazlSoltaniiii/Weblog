@@ -139,6 +139,7 @@ let checkDeleteItem = (button) => {
 
 let editItem = (button) => {
     let postTitle = document.querySelector('#postTitle').value,
+        postContent = document.querySelector('#postContent').value,
         itemId = button.getAttribute('data-id'),
         itemStatus = button.getAttribute('data-status');
 
@@ -150,7 +151,8 @@ let editItem = (button) => {
                 .getAttribute("content"), // for 419 error
         },
         body: JSON.stringify({
-            title: postTitle
+            title: postTitle,
+            content: postContent
         })
     }).then((response) => {
         if (!response.ok) return;

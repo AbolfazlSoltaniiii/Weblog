@@ -23,8 +23,13 @@
             min-height: 100vh;
         }
 
+        .list-group-item {
+            transition: all 0.3s ease !important;
+            border-radius: 10px !important;
+        }
+
         .bg-dark-primary {
-            background-color: rgb(45 53 75) !important;
+            background-color: #2C3E50 !important;
         }
 
         .list {
@@ -110,10 +115,9 @@
 
                         <label for="postTitle" class="form-label mt-3">عنوان:</label>
                         <input type="text" class="form-control" id="postTitle">
-
-                        <label for="postContent" class="form-label mt-3">محتوا:</label>
                     </div>
 
+                    <label for="postContent" class="form-label mt-3">محتوا:</label>
                     <textarea class="form-control flex-grow-1" id="postContent"></textarea>
                 </div>
 
@@ -147,18 +151,25 @@
 
     <div class="row">
         <div class="col-3 pb-3 ps-3 bg-dark-primary full-height text-white d-flex flex-column">
-            <div class="d-flex border-bottom border-2 curved-border pt-2">
+            <div class="d-flex border-bottom border-2 curved-border pt-2 mb-3">
                 <i class="bi bi-file-post fs-2"></i>
                 &nbsp;
                 <p class="fs-3">پست ها</p>
             </div>
 
-            <div class="list-group list-group-flush gap-3">
-                <a class="list-group-item bg-transparent text-white list" data-status="approved" href="#">تایید شده</a>
-                <a class="list-group-item bg-transparent text-white list" data-status="pending" href="#">در حال
-                    بررسی</a>
-                <a class="list-group-item bg-transparent text-white list border-bottom" data-status="rejected" href="#">رد
-                    شده</a>
+            <div class="list-group list-group-flush gap-4">
+                <a class="list-group-item bg-transparent text-white list d-flex align-items-center" data-status="approved" href="#">
+                    <i class="bi bi-check-circle-fill text-success ms-2"></i>
+                    تایید شده
+                </a>
+                <a class="list-group-item bg-transparent text-white list d-flex align-items-center" data-status="pending" href="#">
+                    <i class="bi bi-hourglass-split text-warning ms-2"></i>
+                    در حال بررسی
+                </a>
+                <a class="list-group-item bg-transparent text-white list d-flex align-items-center border-bottom" data-status="rejected" href="#">
+                    <i class="bi bi-x-circle-fill text-danger ms-2"></i>
+                    رد شده
+                </a>
             </div>
 
             <form method="post" action="/logout" class="mt-auto d-flex justify-content-end">
@@ -172,13 +183,13 @@
         <div class="col-9" id="mainContent">
             <table id="data-container" class="table table-striped table-hover">
                 <thead>
-                    <tr>
-                        <th style="width: 100px;">ردیف</th>
-                        <th>عنوان</th>
-                        <th>ایجاد کننده</th>
-                        <th style="width: 50px;"></th>
-                        <th style="width: 50px"></th>
-                    </tr>
+                <tr>
+                    <th style="width: 100px;">ردیف</th>
+                    <th>عنوان</th>
+                    <th>ایجاد کننده</th>
+                    <th style="width: 50px;"></th>
+                    <th style="width: 50px"></th>
+                </tr>
                 </thead>
 
                 <tbody id="tbody"></tbody>

@@ -71,7 +71,8 @@ class PostController extends Controller
         return $this->post->query()
             ->find($id)
             ?->update([
-                'title' => $request['title']
+                'title' => $request['title'] ?? null,
+                'content' => $request['content'] ?? null,
             ]);
     }
 
