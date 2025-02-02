@@ -1,12 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Post;
 
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\PostUser\PostUserController;
+use App\Http\Requests\Post\PostRequest;
 use App\Post;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use JsonException;
 
@@ -15,8 +19,9 @@ class PostController extends Controller
     protected mixed $request;
 
     public function __construct(
-        Request               $request,
-        private readonly Post $post
+        Request                             $request,
+        private readonly Post               $post,
+        private readonly PostUserController $postUserController
     )
     {
         $this->request = $request;
@@ -27,18 +32,27 @@ class PostController extends Controller
      */
     public function index(): Collection
     {
+        $userId = Auth::user()?->id;
+
         $request = json_decode($this->request->getContent(), true, 512, JSON_THROW_ON_ERROR);
         $status = $request['status'] ?? null;
 
-        return $this->post->with('postStatus')
+        return $this->post->with(['postStatus', 'postUser.users'])
             ->whereHas('postStatus', fn($query) => $query->where('code', $status))
+            ->when($userId !== 1, function ($q) use ($userId) {
+                $q->whereHas('postUser', fn($query) => $query->where('user_id', $userId));
+            })
             ->get();
     }
 
-    public function store(): JsonResponse
+    public function store(PostRequest $request): JsonResponse
     {
+        DB::beginTransaction();
+
         try {
-            $attributes = $this->validateAttributes();
+            $attributes = $request->all();
+
+            $userId = Auth::user()?->id;
 
             $title = $attributes['title'] ?? null;
 
@@ -48,12 +62,21 @@ class PostController extends Controller
                 'content' => $attributes['content'] ?? null,
             ]);
 
+            $this->postUserController->store([
+                'post_id' => $post?->id,
+                'user_id' => $userId
+            ]);
+
+            DB::commit();
+
             return response()->json([
                 'status' => 'success',
                 'post' => $post,
             ], 201);
 
         } catch (ValidationException $e) {
+            DB::rollBack();
+
             return response()->json([
                 'status' => 'error',
                 'errors' => $e->errors(),
@@ -81,26 +104,5 @@ class PostController extends Controller
         return $this->post->query()
             ->find($id)
             ?->delete();
-    }
-
-    /**
-     * @throws ValidationException
-     * @throws JsonException
-     */
-    public function validateAttributes(): array
-    {
-        $requestData = json_decode($this->request->getContent(), true, 512, JSON_THROW_ON_ERROR);
-
-        $validator = Validator::make($requestData, [
-            'post_status_id' => 'exists:poststatus,id',
-            'title' => 'required|string|unique:posts',
-            'content' => 'nullable|string',
-        ]);
-
-        if ($validator->fails()) {
-            throw new ValidationException($validator);
-        }
-
-        return $validator->validated();
     }
 }

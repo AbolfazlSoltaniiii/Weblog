@@ -4,7 +4,7 @@ use App\Http\Controllers\Auth\Login\LoginController;
 use App\Http\Controllers\Auth\Register\RegisterController;
 use App\Http\Controllers\Auth\Logout\LogoutController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PostController;
+use App\Http\Controllers\Post\PostController;
 
 // for authentication
 Route::get('register', [RegisterController::class, 'registerView'])->name('register');
