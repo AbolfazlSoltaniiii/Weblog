@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth\Register;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\Auth\Register\RegisterRequest;
 use App\User;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;

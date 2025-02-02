@@ -60,7 +60,15 @@ let createPostFields = (data) => {
     data.forEach((item, index) => {
         const row = document.createElement("tr");
 
-        let dataContent = [index + 1, item["title"], "مدیر سیستم"];
+        let postUser = item?.post_user,
+            user = postUser.length ? postUser[0]?.users : null,
+            userName = null;
+
+        if (user) {
+            userName = user['username'] === 'admin' ? 'مدیر سیستم' : user['username'];
+        }
+
+        let dataContent = [index + 1, item["title"], userName];
 
         for (let i = 0; i < dataContent.length; i++) {
             const cell = document.createElement("td");
@@ -88,6 +96,7 @@ let createEditCell = (row, item) => {
 
 let fillModal = (button) => {
     let titleField = document.querySelector('#postTitle'),
+        creatorField = document.querySelector('#postCreator'),
         contentField = document.querySelector('#postContent'),
         saveButton = document.querySelector('#saveButton'),
         editItem = JSON.parse(button.getAttribute('data-item'));
@@ -95,8 +104,13 @@ let fillModal = (button) => {
     saveButton.setAttribute('data-id', editItem['id']);
     saveButton.setAttribute('data-status', editItem['post_status']['code']);
 
+    let userName = editItem['post_user'][0]['users']['username'];
+
+    userName = userName === 'admin' && 'مدیر سیستم' || userName;
+
     titleField.value = editItem['title'];
     contentField.value = editItem['content'];
+    creatorField.innerHTML = userName;
 }
 
 let createDeleteCell = (row, itemId, itemStatus) => {

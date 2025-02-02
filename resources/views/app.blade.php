@@ -1,4 +1,8 @@
-<!DOCTYPE html>
+@php
+    use Illuminate\Support\Facades\Auth;
+@endphp
+
+    <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="utf-8">
@@ -69,8 +73,13 @@
                     <form id="postForm" novalidate>
                         <div class="mb-3">
                             <label class="form-label">
+                                @php
+                                    $userName = Auth::user()?->username;
+                                @endphp
+
                                 ایجاد کننده:&nbsp; &nbsp;
-                                <span class="text-danger fw-bold">مدیر سیستم</span>
+                                <span
+                                    class="text-danger fw-bold">{{$userName === 'admin' ? 'مدیر سیستم' : $userName}}</span>
                             </label>
                             <br>
                             <label for="title" class="form-label mt-3">عنوان:</label>
@@ -109,7 +118,7 @@
                 <div class="modal-body d-flex flex-column">
                     <div class="mb-3">
                         <label class="form-label"> ایجاد کننده:&nbsp; &nbsp;
-                            <span class="text-danger fw-bold">مدیر سیستم</span>
+                            <span class="text-danger fw-bold" id="postCreator"></span>
                         </label>
                         <br>
 
@@ -158,15 +167,18 @@
             </div>
 
             <div class="list-group list-group-flush gap-4">
-                <a class="list-group-item bg-transparent text-white list d-flex align-items-center" data-status="approved" href="#">
+                <a class="list-group-item bg-transparent text-white list d-flex align-items-center"
+                   data-status="approved" href="#">
                     <i class="bi bi-check-circle-fill text-success ms-2"></i>
                     تایید شده
                 </a>
-                <a class="list-group-item bg-transparent text-white list d-flex align-items-center" data-status="pending" href="#">
+                <a class="list-group-item bg-transparent text-white list d-flex align-items-center"
+                   data-status="pending" href="#">
                     <i class="bi bi-hourglass-split text-warning ms-2"></i>
                     در حال بررسی
                 </a>
-                <a class="list-group-item bg-transparent text-white list d-flex align-items-center border-bottom" data-status="rejected" href="#">
+                <a class="list-group-item bg-transparent text-white list d-flex align-items-center border-bottom"
+                   data-status="rejected" href="#">
                     <i class="bi bi-x-circle-fill text-danger ms-2"></i>
                     رد شده
                 </a>
