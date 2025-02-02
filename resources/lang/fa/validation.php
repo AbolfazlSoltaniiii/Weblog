@@ -14,6 +14,9 @@ return [
     ],
 
     'attributes' => [
+        'title' => 'عنوان',
+        'content' => 'محتوا',
+        'post_status_id' => 'وضعیت پست',
         'email' => 'ایمیل',
         'username' => 'نام کاربری',
         'password' => 'رمزعبور',

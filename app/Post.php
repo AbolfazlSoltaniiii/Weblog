@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
@@ -29,5 +30,10 @@ class Post extends Model
     public function postStatus(): BelongsTo
     {
         return $this->belongsTo(PostStatus::class);
+    }
+
+    public function postUser(): HasMany
+    {
+        return $this->hasMany(PostUser::class);
     }
 }
