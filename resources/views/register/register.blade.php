@@ -21,11 +21,16 @@
         .cursor-pointer {
             cursor: pointer;
         }
+
+        input {
+            font-family: Montserrat sans-serif;
+            font-size: 18px !important;
+        }
     </style>
 </head>
 <body dir="rtl">
 <div class="container d-flex justify-content-center align-items-center min-vh-100">
-    <div class="row w-25">
+    <div class="row">
         <div class="col border rounded-3 p-4 shadow-lg bg-light">
             <form method="post">
                 @csrf
@@ -34,7 +39,7 @@
 
                     <input type="email" id="email" name="email" class="form-control text-end rounded-pill"
                            oninvalid="this.setCustomValidity('ایمیل الزامی است.')"
-                           oninput="this.setCustomValidity('')" required>
+                           oninput="this.setCustomValidity(''); validateInput(this);" required>
 
                     @error('email')
                     <small class="text-danger fw-bold">* {{ $message }}</small><br>
@@ -46,7 +51,7 @@
 
                     <input type="text" id="username" name="username" class="form-control text-end rounded-pill"
                            oninvalid="this.setCustomValidity('نام کاربری الزامی است.')"
-                           oninput="this.setCustomValidity('')" required>
+                           oninput="this.setCustomValidity(''); validateInput(this);" required>
 
                     @error('username')
                     <small class="text-danger fw-bold">* {{ $message }}</small><br>
@@ -60,7 +65,7 @@
                         <input type="password" id="passwordInput" name="password"
                                class="form-control text-end rounded-pill ps-5"
                                oninvalid="this.setCustomValidity('رمز عبور الزامی است.')"
-                               oninput="this.setCustomValidity('')" required>
+                               oninput="this.setCustomValidity(''); validateInput(this);" required>
 
                         <span class="position-absolute top-50 translate-middle-y start-0 ms-3"
                               onclick="toggleVisibility('passwordInput', 'passwordIcon')">
@@ -80,7 +85,7 @@
                         <input type="password" id="passwordConfirmationInput" name="password_confirmation"
                                class="form-control text-end rounded-pill ps-5"
                                oninvalid="this.setCustomValidity('تکرار رمز عبور الزامی است.')"
-                               oninput="this.setCustomValidity('')" required>
+                               oninput="this.setCustomValidity(''); validateInput(this);" required>
 
                         <span class="position-absolute top-50 translate-middle-y start-0 ms-3"
                               onclick="toggleVisibility('passwordConfirmationInput', 'passwordConfirmationIcon')">
