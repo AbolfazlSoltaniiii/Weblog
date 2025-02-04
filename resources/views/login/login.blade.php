@@ -21,6 +21,11 @@
         .cursor-pointer {
             cursor: pointer;
         }
+
+        input {
+            font-family: Montserrat sans-serif;
+            font-size: 18px !important;
+        }
     </style>
 </head>
 <body dir="rtl">
@@ -39,7 +44,7 @@
 
                     <input type="text" id="username" name="username" class="form-control text-end rounded-pill"
                            oninvalid="this.setCustomValidity('نام کاربری الزامی است.')"
-                           oninput="this.setCustomValidity('')" required>
+                           oninput="this.setCustomValidity(''); validateInput(this);" required>
 
                     @error('username')
                     <small class="text-danger fw-bold">* {{ $message }}</small> <br>
@@ -53,7 +58,7 @@
                         <input type="password" id="passwordInput" name="password"
                                class="form-control text-end rounded-pill ps-5"
                                oninvalid="this.setCustomValidity('رمز عبور الزامی است.')"
-                               oninput="this.setCustomValidity('')" required>
+                               oninput="this.setCustomValidity(''); validateInput(this);" required>
 
                         <span class="position-absolute top-50 translate-middle-y start-0 ms-3"
                               onclick="togglePasswordVisibility()">
@@ -74,7 +79,7 @@
                     <button type="submit" class="btn btn-primary rounded-pill">ورود</button>
                 </div>
 
-                <p>
+                <p class="text-center">
                     هنوز ثبت نام نکرده اید؟
                     <a class="link-opacity-50-hover text-decoration-none" href="/register">ثبت نام کنید</a>
                 </p>
