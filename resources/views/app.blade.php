@@ -53,6 +53,24 @@
         #data-container {
             table-layout: fixed;
         }
+
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #4a568f;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2C3E50;
+        }
     </style>
 </head>
 
@@ -120,10 +138,23 @@
                         <label class="form-label"> ایجاد کننده:&nbsp; &nbsp;
                             <span class="text-danger fw-bold" id="postCreator"></span>
                         </label>
-                        <br>
 
-                        <label for="postTitle" class="form-label mt-3">عنوان:</label>
-                        <input type="text" class="form-control" id="postTitle">
+                        <div class="row mt-3">
+                            <div class="col-md-8">
+                                <label for="postTitle" class="form-label">عنوان:</label>
+                                <input type="text" class="form-control" id="postTitle">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="postStatus" class="form-label">وضعیت:</label>
+                                <select class="form-select" id="postStatus"
+                                    {{ $userName !== 'admin' ? 'disabled' : '' }}
+                                >
+                                    <option value="approved">تایید شده</option>
+                                    <option value="pending">در حال بررسی</option>
+                                    <option value="rejected">رد شده</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
 
                     <label for="postContent" class="form-label mt-3">محتوا:</label>
