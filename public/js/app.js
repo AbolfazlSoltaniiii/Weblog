@@ -57,6 +57,10 @@ let getPostData = (status) => {
 }
 
 let createPostFields = (data) => {
+    if (!data.length) {
+        return showEmptyPostRecord();
+    }
+
     data.forEach((item, index) => {
         const row = document.createElement("tr");
 
@@ -86,6 +90,19 @@ let createPostFields = (data) => {
     });
 }
 
+let showEmptyPostRecord = () => {
+    const row = document.createElement("tr"),
+        cell = document.createElement("td");
+
+    cell.textContent = "پستی جهت نمایش وجود ندارد.";
+
+    cell.setAttribute("colspan", 5);
+    cell.classList.add("text-center", "fw-bold", "text-muted");
+
+    row.appendChild(cell);
+    body.appendChild(row);
+}
+
 let createEditCell = (row, item) => {
     const cell = document.createElement("td");
 
@@ -97,20 +114,23 @@ let createEditCell = (row, item) => {
 let fillModal = (button) => {
     let titleField = document.querySelector('#postTitle'),
         creatorField = document.querySelector('#postCreator'),
+        statusField = document.querySelector('#postStatus'),
         contentField = document.querySelector('#postContent'),
         saveButton = document.querySelector('#saveButton'),
-        editItem = JSON.parse(button.getAttribute('data-item'));
+        editItem = JSON.parse(button.getAttribute('data-item')),
+        postStatsCode = editItem['post_status']['code'] ?? null;
 
     saveButton.setAttribute('data-id', editItem['id']);
-    saveButton.setAttribute('data-status', editItem['post_status']['code']);
+    saveButton.setAttribute('data-status', postStatsCode);
 
     let userName = editItem['post_user'][0]['users']['username'];
 
     userName = userName === 'admin' && 'مدیر سیستم' || userName;
 
-    titleField.value = editItem['title'];
-    contentField.value = editItem['content'];
     creatorField.innerHTML = userName;
+    titleField.value = editItem['title'];
+    statusField.value = postStatsCode;
+    contentField.value = editItem['content'];
 }
 
 let createDeleteCell = (row, itemId, itemStatus) => {
@@ -153,6 +173,7 @@ let checkDeleteItem = (button) => {
 
 let editItem = (button) => {
     let postTitle = document.querySelector('#postTitle').value,
+        postStatus = document.querySelector('#postStatus').value,
         postContent = document.querySelector('#postContent').value,
         itemId = button.getAttribute('data-id'),
         itemStatus = button.getAttribute('data-status');
@@ -166,6 +187,7 @@ let editItem = (button) => {
         },
         body: JSON.stringify({
             title: postTitle,
+            status: postStatus,
             content: postContent
         })
     }).then((response) => {

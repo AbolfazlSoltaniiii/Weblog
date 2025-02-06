@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Post;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\PostStatus\PostStatusController;
 use App\Http\Controllers\PostUser\PostUserController;
 use App\Http\Requests\Post\PostRequest;
 use App\Post;
@@ -19,9 +20,10 @@ class PostController extends Controller
     protected mixed $request;
 
     public function __construct(
-        Request                             $request,
-        private readonly Post               $post,
-        private readonly PostUserController $postUserController
+        Request                               $request,
+        private readonly Post                 $post,
+        private readonly PostUserController   $postUserController,
+        private readonly PostStatusController $postStatusController
     )
     {
         $this->request = $request;
@@ -84,17 +86,16 @@ class PostController extends Controller
         }
     }
 
-    /**
-     * @throws JsonException
-     */
-    public function update($id): ?bool
+    public function update(PostRequest $request, $id): ?bool
     {
-        $request = json_decode($this->request->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        $postStatusCode = $request['status'] ?? null;
+        $postStatusId = $this->postStatusController->getByCode($postStatusCode)?->id;
 
         return $this->post->query()
             ->find($id)
             ?->update([
                 'title' => $request['title'] ?? null,
+                'post_status_id' => $postStatusId,
                 'content' => $request['content'] ?? null,
             ]);
     }
