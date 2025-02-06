@@ -79,7 +79,7 @@
                     <button type="submit" class="btn btn-primary rounded-pill">ورود</button>
                 </div>
 
-                <p class="text-center">
+                <p class="text-center mb-4">
                     هنوز ثبت نام نکرده اید؟
                     <a class="link-opacity-50-hover text-decoration-none" href="/register">ثبت نام کنید</a>
                 </p>
