@@ -120,6 +120,8 @@ let fillModal = (button) => {
         editItem = JSON.parse(button.getAttribute('data-item')),
         postStatsCode = editItem['post_status']['code'] ?? null;
 
+    titleField.classList.remove("is-invalid");
+
     saveButton.setAttribute('data-id', editItem['id']);
     saveButton.setAttribute('data-status', postStatsCode);
 
@@ -172,11 +174,26 @@ let checkDeleteItem = (button) => {
 }
 
 let editItem = (button) => {
-    let postTitle = document.querySelector('#postTitle').value,
-        postStatus = document.querySelector('#postStatus').value,
-        postContent = document.querySelector('#postContent').value,
+    let postEditForm = document.querySelector("#postEditForm"),
+        postTitleField = document.querySelector('#postTitle'),
+        postStatusField = document.querySelector('#postStatus'),
+        postContentField = document.querySelector('#postContent'),
+        postTitle = postTitleField.value,
+        postStatus = postStatusField.value,
+        postContent = postContentField.value,
         itemId = button.getAttribute('data-id'),
         itemStatus = button.getAttribute('data-status');
+
+    let editModal = bootstrap.Modal.getInstance(
+        document.querySelector("#editModal")
+    );
+
+    postTitleField.classList.remove("is-invalid");
+
+    if (!postEditForm.checkValidity()) {
+        postTitleField.classList.add("is-invalid");
+        return;
+    }
 
     fetch(`post/${itemId}`, {
         method: "PUT",
@@ -184,18 +201,33 @@ let editItem = (button) => {
             "X-CSRF-TOKEN": document
                 .querySelector('meta[name="csrf-token"]')
                 .getAttribute("content"), // for 419 error
+            "Content-Type": "application/json"
         },
         body: JSON.stringify({
             title: postTitle,
             status: postStatus,
             content: postContent
         })
-    }).then((response) => {
-        if (!response.ok) return;
+    }).then(async (response) => {
+        if (response.ok) {
+            editModal.hide();
 
-        showToast('اطلاعات پست با موفقیت ویرایش شد.');
+            showToast('اطلاعات پست با موفقیت ویرایش شد.');
 
-        reloadData(itemStatus)
+            reloadData(itemStatus)
+        } else {
+            let errorData = await response.json(),
+                errorTitle = errorData.errors.title;
+
+            if (!errorTitle || !errorTitle.length) return;
+
+            postTitleField.classList.add("is-invalid");
+            document.querySelector("#invalidEditFeedback").textContent = errorTitle[0];
+        }
+    }).catch(() => {
+        let className = "toast bg-danger text-white m-2 position-absolute bottom-0 start-0";
+
+        showToast("مشکلی در ارتباط با سرور رخ داده است.", "failure", className);
     });
 }
 
@@ -231,7 +263,8 @@ let onCreatePost = () => {
                 .getAttribute("content"), // for 419 error
         },
         body: JSON.stringify({
-            title: postTitle
+            title: postTitle,
+            status: "pending"
         })
     }).then(async (response) => {
         if (response.ok) {
@@ -247,7 +280,7 @@ let onCreatePost = () => {
             if (!errorTitle || !errorTitle.length) return;
 
             postTitleField.classList.add("is-invalid");
-            document.querySelector(".invalid-feedback").textContent = errorTitle[0];
+            document.querySelector("#invalidCreateFeedback").textContent = errorTitle[0];
         }
     }).catch(() => {
         let className = "toast bg-danger text-white m-2 position-absolute bottom-0 start-0";
@@ -286,4 +319,10 @@ let showToast = (message, type = 'success', className = null) => {
 
     mainContent.appendChild(div)
     new bootstrap.Toast(div).show();
+}
+
+let onCreatePostModalClick = () => {
+    let titleField = document.querySelector('#title');
+
+    titleField.classList.remove("is-invalid");
 }
