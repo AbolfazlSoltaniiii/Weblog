@@ -12,11 +12,12 @@ class PostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'post_status_id' => 'exists:poststatus,id',
+            'status' => 'required|exists:post_status,code',
             'title' => [
                 'required',
                 'string',
                 Rule::unique('posts')->whereNull('deleted_at')
+                    ->ignore($this->route('post'))
             ],
             'content' => 'nullable|string',
         ];
