@@ -6,6 +6,7 @@ return [
     'confirmed' => ':attribute با تکرار آن مطابقت ندارد.',
     'email' => 'فرمت ایمیل نامعتبر است.',
     'unique' => ':attribute تکراری است.',
+    'exists' => ':attribute نامعتبر است.',
     'min' => [
         'string' => ':attribute باید حداقل :min کاراکتر باشد.'
     ],
@@ -16,7 +17,7 @@ return [
     'attributes' => [
         'title' => 'عنوان',
         'content' => 'محتوا',
-        'post_status_id' => 'وضعیت پست',
+        'status' => 'وضعیت پست',
         'email' => 'ایمیل',
         'username' => 'نام کاربری',
         'password' => 'رمزعبور',

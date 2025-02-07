@@ -58,8 +58,11 @@ class PostController extends Controller
 
             $title = $attributes['title'] ?? null;
 
+            $postStatusCode = $request['status'] ?? null;
+            $postStatusId = $this->postStatusController->getByCode($postStatusCode)?->id;
+
             $post = $this->post->query()->create([
-                'post_status_id' => 2,
+                'post_status_id' => $postStatusId,
                 'title' => $title,
                 'content' => $attributes['content'] ?? null,
             ]);

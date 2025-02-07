@@ -107,7 +107,7 @@
                                 id="title"
                                 name="title"
                                 required>
-                            <div class="invalid-feedback">
+                            <div class="invalid-feedback" id="invalidCreateFeedback">
                                 فیلد عنوان الزامی است.
                             </div>
                         </div>
@@ -134,35 +134,42 @@
                 </div>
 
                 <div class="modal-body d-flex flex-column">
-                    <div class="mb-3">
-                        <label class="form-label"> ایجاد کننده:&nbsp; &nbsp;
-                            <span class="text-danger fw-bold" id="postCreator"></span>
-                        </label>
+                    <form id="postEditForm" class="d-flex flex-column flex-grow-1" novalidate>
+                        <div class="mb-3">
+                            <label class="form-label"> ایجاد کننده:&nbsp; &nbsp;
+                                <span class="text-danger fw-bold" id="postCreator"></span>
+                            </label>
 
-                        <div class="row mt-3">
-                            <div class="col-md-8">
-                                <label for="postTitle" class="form-label">عنوان:</label>
-                                <input type="text" class="form-control" id="postTitle">
-                            </div>
-                            <div class="col-md-4">
-                                <label for="postStatus" class="form-label">وضعیت:</label>
-                                <select class="form-select" id="postStatus"
-                                    {{ $userName !== 'admin' ? 'disabled' : '' }}
-                                >
-                                    <option value="approved">تایید شده</option>
-                                    <option value="pending">در حال بررسی</option>
-                                    <option value="rejected">رد شده</option>
-                                </select>
+                            <div class="row mt-3">
+                                <div class="col-md-8">
+                                    <label for="postTitle" class="form-label">عنوان:</label>
+                                    <input type="text" class="form-control" id="postTitle" required>
+                                    <div class="invalid-feedback" id="invalidEditFeedback">
+                                        فیلد عنوان الزامی است.
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="postStatus" class="form-label">وضعیت:</label>
+                                    <select class="form-select" id="postStatus"
+                                        {{ $userName !== 'admin' ? 'disabled' : '' }}
+                                    >
+                                        <option value="approved">تایید شده</option>
+                                        <option value="pending">در حال بررسی</option>
+                                        <option value="rejected">رد شده</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <label for="postContent" class="form-label mt-3">محتوا:</label>
-                    <textarea class="form-control flex-grow-1" id="postContent"></textarea>
+                        <label for="postContent" class="form-label mt-3">محتوا:</label>
+                        <textarea class="form-control flex-grow-1" id="postContent" rows="4"
+                                  style="resize: none;"></textarea>
+                    </form>
                 </div>
 
+
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="saveButton" data-bs-dismiss="modal" data-id=""
+                    <button type="button" class="btn btn-primary" id="saveButton" data-id=""
                             onclick="editItem(this)">ذخیره
                     </button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
@@ -238,7 +245,7 @@
                 <tbody id="tbody"></tbody>
 
                 <button class="btn btn-success rounded-circle position-absolute bottom-0 m-4 px-3"
-                        data-bs-toggle="modal" data-bs-target="#addModal">
+                        data-bs-toggle="modal" data-bs-target="#addModal" onclick="onCreatePostModalClick()">
                     <i class="bi bi-plus fs-2"></i>
                 </button>
             </table>
