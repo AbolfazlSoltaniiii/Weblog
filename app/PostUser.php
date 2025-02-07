@@ -24,6 +24,7 @@ class PostUser extends Model
 
     public function users(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id')
+            ->select(['id', 'username', 'email']);
     }
 }
