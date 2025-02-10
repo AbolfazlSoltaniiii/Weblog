@@ -11,6 +11,8 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('post_users', static function (Blueprint $table) {
+            $table->dropForeign(['user_id', 'post_id']);
+
             $table->foreign('user_id')
                 ->references('id')->on('users')
                 ->cascadeOnUpdate()
