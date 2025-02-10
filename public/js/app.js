@@ -48,8 +48,8 @@ let getPostData = (status) => {
                 return response.json();
             }
         })
-        .then((data) => {
-            createPostFields(data);
+        .then((result) => {
+            createPostFields(result['data']);
         })
         .catch(() => {
             alert("هنگام واکشی اطلاعات خطایی رخ داده است.");
