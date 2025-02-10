@@ -76,6 +76,15 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #2C3E50;
         }
+
+        .site-title {
+            background: linear-gradient(20deg, #92c4fc, #bec7fc);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            font-size: 1.9rem;
+            letter-spacing: 1px;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
     </style>
 </head>
 
@@ -202,13 +211,14 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="d-md-none d-flex justify-content-between align-items-center p-2 bg-dark-primary text-white">
-            <button class="btn bg-dark-primary text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas">
+        <div class="d-md-none d-flex justify-content-between align-items-center p-3 bg-dark-primary text-white shadow-sm">
+            <button class="btn bg-transparent text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas">
                 <i class="bi bi-list fs-3"></i>
             </button>
 
-            <h2>گروه نشر یار</h2>
+            <h2 class="site-title fw-bold mx-auto">گروه نشر یار</h2>
         </div>
+
 
         <div
             class="offcanvas offcanvas-end d-md-none col-12 pb-3 ps-3 bg-dark-primary full-height text-white d-flex flex-column"
