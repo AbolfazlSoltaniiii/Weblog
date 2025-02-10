@@ -19,8 +19,13 @@
     <link rel="icon" href="{{asset('icon/logo.png')}}">
 
     <style>
+        @font-face {
+            font-family: "Yekan";
+            src: url("/font/Yekan.woff");
+        }
+
         body {
-            font-family: "B Yekan", sans-serif;
+            font-family: "Yekan", sans-serif;
         }
 
         .full-height {
@@ -284,7 +289,7 @@
 
         <div class="col-md-9 ms-md-auto" id="mainContent">
             <table id="data-container" class="table table-striped table-hover">
-                <thead>
+                <thead class="position-sticky top-0">
                 <tr>
                     <th style="width: 70px;">ردیف</th>
                     <th>عنوان</th>

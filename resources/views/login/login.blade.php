@@ -14,8 +14,13 @@
     <link rel="icon" href="{{asset('icon/logo.png')}}">
 
     <style>
-        * {
-            font-family: "B Yekan", sans-serif;
+        @font-face {
+            font-family: "Yekan";
+            src: url("/font/Yekan.woff");
+        }
+
+        body {
+            font-family: "Yekan", sans-serif;
         }
 
         .cursor-pointer {
