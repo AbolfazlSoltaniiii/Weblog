@@ -304,17 +304,15 @@ let showToast = (message, type = 'success', className = null) => {
     let mainContent = document.querySelector("#mainContent"),
         div = document.createElement("div");
 
-    div.className = "toast text-bg-success m-2 position-absolute bottom-0 start-0"
+    div.className = "d-flex col-8 toast text-bg-success m-2 position-absolute bottom-0 start-0"
 
     if (type !== 'success') {
         div.className = className;
     }
 
     div.innerHTML = `
-        <div class="d-flex">
-            <div class="toast-body">${message}</div>
-            <button type="button" class="btn-close btn-close-white me-auto m-2 p-2" data-bs-dismiss="toast"></button>
-        </div>
+        <div class="toast-body">${message}</div>
+        <button type="button" class="btn-close btn-close-white me-auto m-2 p-2" data-bs-dismiss="toast"></button>
     `;
 
     mainContent.appendChild(div)
