@@ -6,10 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\PostStatus\PostStatusController;
 use App\Http\Controllers\PostUser\PostUserController;
 use App\Http\Requests\Post\PostRequest;
+use App\Http\Resources\Post\PostResource;
 use App\Post;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -32,19 +33,21 @@ class PostController extends Controller
     /**
      * @throws JsonException
      */
-    public function index(): Collection
+    public function index(): AnonymousResourceCollection
     {
         $userId = Auth::user()?->id;
 
         $request = json_decode($this->request->getContent(), true, 512, JSON_THROW_ON_ERROR);
         $status = $request['status'] ?? null;
 
-        return $this->post->with(['postStatus', 'postUser.users'])
+        $result = $this->post->with(['postStatus', 'postUser.users'])
             ->whereHas('postStatus', fn($query) => $query->where('code', $status))
             ->when($userId !== 1, function ($q) use ($userId) {
                 $q->whereHas('postUser', fn($query) => $query->where('user_id', $userId));
             })
             ->get();
+
+        return PostResource::collection($result);
     }
 
     public function store(PostRequest $request): JsonResponse
