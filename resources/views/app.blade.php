@@ -324,7 +324,7 @@
                 <i class="bi bi-plus fs-2"></i>
             </button>
 
-            <button class="btn btn-primary bg-gradient position-absolute bottom-0 start-0 mx-5 my-3" title="نمایش داشبورد"
+            <button class="btn btn-primary bg-gradient position-absolute bottom-0 start-0 mx-4 my-3" title="نمایش داشبورد"
                     onclick="onShowDashboardClick()">
                 <i class="bi bi-columns-gap fs-2"></i>
             </button>
