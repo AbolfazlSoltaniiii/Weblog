@@ -24,5 +24,5 @@ Route::middleware('auth')->group(function () {
     Route::post('post/index', [PostController::class, 'index']);
     Route::resource('post', PostController::class);
 
-    Route::get('/dashboard', [DashboardController::class, 'view']);
+    Route::get('dashboard', [DashboardController::class, 'view']);
 });
