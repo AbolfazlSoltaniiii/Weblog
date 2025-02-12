@@ -44,7 +44,7 @@
             </button>
 
             <button id="redirect" class="btn btn-outline-dark position-absolute start-0 mx-4"
-                    onclick="onRedirectClick()">
+                    title="رفتن به صفحه اصلی" onclick="onRedirectClick()">
                 <i class="bi bi-box-arrow-in-left"></i>
             </button>
         </div>
@@ -88,6 +88,14 @@
         type: 'bar',
         data: data,
         options: {
+            scales: {
+                y: {
+                    ticks: {
+                        stepSize: 1
+                    },
+                    beginAtZero: true,
+                },
+            },
             plugins: {
                 legend: {
                     display: false

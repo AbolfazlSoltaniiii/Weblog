@@ -324,3 +324,7 @@ let onCreatePostModalClick = () => {
 
     titleField.classList.remove("is-invalid");
 }
+
+let onShowDashboardClick = () => {
+    window.location.href = '/dashboard';
+}
