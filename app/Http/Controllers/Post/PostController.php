@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use JsonException;
+use function PHPUnit\TestFixture\func;
 
 class PostController extends Controller
 {
@@ -111,5 +112,17 @@ class PostController extends Controller
         return $this->post->query()
             ->find($id)
             ?->delete();
+    }
+
+    public function getCountForDashboard($status = null): string
+    {
+        $result = $this->post->query()
+            ->select(DB::raw('count(*) as count'))
+            ->when(isset($status), function ($q) use ($status) {
+                $q->whereHas('postStatus', fn($query) => $query->where('code', $status));
+            })
+            ->first();
+
+        return (string)$result?->count;
     }
 }

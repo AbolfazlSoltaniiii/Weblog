@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>نشر‌ یار</title>
+    <link rel="icon" href="{{asset('icon/logo.png')}}">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+        @font-face {
+            font-family: "Yekan";
+            src: url("/font/Yekan.woff");
+        }
+
+        body {
+            font-family: "Yekan", sans-serif;
+        }
+
+        .title {
+            background: linear-gradient(20deg, #034998, #7789f1);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+            letter-spacing: 1px;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+
+<body data-bs-theme="light">
+<div class="container-fluid">
+    <div class="row">
+        <div id="titleDivide" class="d-flex justify-content-center align-items-center border bg-light">
+            <h2 class="p-3 title text-center">بررسی وضعیت پست های سیستم</h2>
+
+            <button id="themeToggle" class="btn btn-outline-dark position-absolute end-0 mx-4"
+                    onclick="onChangeThemeClick()">
+                <i id="themeIcon" class="bi bi-moon-fill"></i>
+            </button>
+
+            <button id="redirect" class="btn btn-outline-dark position-absolute start-0 mx-4"
+                    onclick="onRedirectClick()">
+                <i class="bi bi-box-arrow-in-left"></i>
+            </button>
+        </div>
+
+        <div class="col-4 border d-md-flex d-none p-3 mb-3" dir="rtl">
+            تعداد پست های&nbsp;<span class="fw-bold text-danger">رد شده:&nbsp;{{ $rejectedPosts }}</span>
+        </div>
+        <div class="col-4 border d-md-flex d-none p-3 mb-3" dir="rtl">
+            تعداد پست های&nbsp;<span class="fw-bold text-warning">در حال بررسی:&nbsp;{{ $pendingPosts }}</span>
+        </div>
+        <div class="col-4 border d-md-flex d-none p-3 mb-3" dir="rtl">
+            تعداد پست های&nbsp;<span class="fw-bold text-success">تایید شده:&nbsp;{{ $approvedPosts }}</span>
+        </div>
+
+        <div class="col-md-7 col-12">
+            <canvas id="barChart"></canvas>
+        </div>
+        <div class="col-md-4 col-12">
+            <canvas id="doughnutChart"></canvas>
+        </div>
+    </div>
+</div>
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    let onChangeThemeClick = () => {
+        let titleDivide = document.querySelector('#titleDivide'),
+            redirectButton = document.querySelector('#redirect'),
+            themeToggleButton = document.querySelector('#themeToggle'),
+            themeIcon = document.querySelector('#themeIcon');
+
+        let currentTheme = document.body.getAttribute("data-bs-theme"),
+            newTheme = currentTheme === "dark" ? "light" : "dark";
+
+        document.body.setAttribute("data-bs-theme", newTheme);
+
+        titleDivide.classList.remove("bg-dark", "bg-light");
+        titleDivide.classList.add(newTheme === "dark" ? "bg-dark" : "bg-light");
+
+        redirectButton.classList.remove("btn-outline-light", "btn-outline-dark");
+        redirectButton.classList.add(newTheme === "dark" ? "btn-outline-light" : "btn-outline-dark");
+
+        themeToggleButton.classList.remove("btn-outline-light", "btn-outline-dark");
+        themeToggleButton.classList.add(newTheme === "dark" ? "btn-outline-light" : "btn-outline-dark");
+
+        themeIcon.className = newTheme === "dark" ? "bi bi-sun-fill" : "bi bi-moon-fill";
+    }
+
+    let onRedirectClick = () => {
+        window.location.href = '/';
+    }
+
+    const data = {
+        labels: ['رد شده', 'در حال بررسی', 'تایید شده'],
+        datasets: [{
+            backgroundColor: ['rgb(185,5,5)', 'rgb(250,221,59)', 'rgb(5,122,24)'],
+            borderColor: ['rgb(185,5,5)', 'rgb(250,221,59)', 'rgb(5,122,24)'],
+            data: [{{$rejectedPosts}}, {{$pendingPosts}}, {{$approvedPosts}}],
+        }]
+    };
+
+    const barConfig = {
+        type: 'bar',
+        data: data,
+        options: {
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    };
+
+    const doughnutConfig = {
+        type: 'doughnut',
+        data: data,
+        options: {
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    };
+
+    const barChart = new Chart(
+        document.getElementById('barChart'),
+        barConfig
+    );
+
+    const doughnutChart = new Chart(
+        document.getElementById('doughnutChart'),
+        doughnutConfig
+    );
+</script>
+</html>
