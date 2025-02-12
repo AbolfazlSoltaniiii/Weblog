@@ -7,6 +7,7 @@
     <title>نشر‌ یار</title>
     <link rel="icon" href="{{asset('icon/logo.png')}}">
 
+    {{-- bootstrap cdn --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -34,8 +35,8 @@
 <body data-bs-theme="light">
 <div class="container-fluid">
     <div class="row">
-        <div id="titleDivide" class="d-flex justify-content-center align-items-center border bg-light">
-            <h2 class="p-3 title text-center">بررسی وضعیت پست های سیستم</h2>
+        <div id="titleDivide" class="d-flex justify-content-center align-items-center bg-light">
+            <h2 class="p-3 title text-center w-75">بررسی وضعیت پست های سیستم</h2>
 
             <button id="themeToggle" class="btn btn-outline-dark position-absolute end-0 mx-4"
                     onclick="onChangeThemeClick()">
@@ -58,7 +59,7 @@
             تعداد پست های&nbsp;<span class="fw-bold text-success">تایید شده:&nbsp;{{ $approvedPosts }}</span>
         </div>
 
-        <div class="col-md-7 col-12">
+        <div class="col-md-8 col-12">
             <canvas id="barChart"></canvas>
         </div>
         <div class="col-md-4 col-12">
@@ -68,37 +69,12 @@
 </div>
 </body>
 
+{{-- chart.js cdn --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<script src="{{ asset('js/dashboard/dashboard.js') }}"></script>
 <script>
-    let onChangeThemeClick = () => {
-        let titleDivide = document.querySelector('#titleDivide'),
-            redirectButton = document.querySelector('#redirect'),
-            themeToggleButton = document.querySelector('#themeToggle'),
-            themeIcon = document.querySelector('#themeIcon');
-
-        let currentTheme = document.body.getAttribute("data-bs-theme"),
-            newTheme = currentTheme === "dark" ? "light" : "dark";
-
-        document.body.setAttribute("data-bs-theme", newTheme);
-
-        titleDivide.classList.remove("bg-dark", "bg-light");
-        titleDivide.classList.add(newTheme === "dark" ? "bg-dark" : "bg-light");
-
-        redirectButton.classList.remove("btn-outline-light", "btn-outline-dark");
-        redirectButton.classList.add(newTheme === "dark" ? "btn-outline-light" : "btn-outline-dark");
-
-        themeToggleButton.classList.remove("btn-outline-light", "btn-outline-dark");
-        themeToggleButton.classList.add(newTheme === "dark" ? "btn-outline-light" : "btn-outline-dark");
-
-        themeIcon.className = newTheme === "dark" ? "bi bi-sun-fill" : "bi bi-moon-fill";
-    }
-
-    let onRedirectClick = () => {
-        window.location.href = '/';
-    }
-
     const data = {
         labels: ['رد شده', 'در حال بررسی', 'تایید شده'],
         datasets: [{
@@ -141,5 +117,10 @@
         document.getElementById('doughnutChart'),
         doughnutConfig
     );
+
+    window.addEventListener('resize', function () {
+        barChart.resize();
+        doughnutChart.resize();
+    });
 </script>
 </html>
