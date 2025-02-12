@@ -211,14 +211,15 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="d-md-none d-flex justify-content-between align-items-center p-3 bg-dark-primary text-white shadow-sm">
-            <button class="btn bg-transparent text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas">
+        <div
+            class="d-md-none d-flex justify-content-between align-items-center p-3 bg-dark-primary text-white shadow-sm">
+            <button class="btn bg-transparent text-white" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#sidebarOffcanvas">
                 <i class="bi bi-list fs-3"></i>
             </button>
 
             <h2 class="site-title fw-bold mx-auto">گروه نشر یار</h2>
         </div>
-
 
         <div
             class="offcanvas offcanvas-end d-md-none col-12 pb-3 ps-3 bg-dark-primary full-height text-white d-flex flex-column"
@@ -321,6 +322,11 @@
             <button class="btn btn-success rounded-circle position-absolute bottom-0 m-3 px-md-3 py-md-2"
                     data-bs-toggle="modal" data-bs-target="#addModal" onclick="onCreatePostModalClick()">
                 <i class="bi bi-plus fs-2"></i>
+            </button>
+
+            <button class="btn btn-primary bg-gradient position-absolute bottom-0 start-0 mx-5 my-3" title="نمایش داشبورد"
+                    onclick="onShowDashboardClick()">
+                <i class="bi bi-columns-gap fs-2"></i>
             </button>
         </div>
     </div>
