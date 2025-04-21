@@ -40,6 +40,10 @@
             <form method="post">
                 @csrf
 
+                @if(session('resetPassword'))
+                    <span class="text-success fw-bold d-flex justify-content-center small">تغییر رمز عبور با موفقیت انجام شد.</span>
+                @endif
+
                 @error('login_error')
                 <small class="text-danger d-flex justify-content-center">{{ $message }}</small>
                 @enderror
@@ -84,9 +88,13 @@
                     <button type="submit" class="btn btn-primary rounded-pill">ورود</button>
                 </div>
 
-                <p class="text-center mb-4">
+                <p class="text-center mb-3">
                     هنوز ثبت نام نکرده اید؟
                     <a class="link-opacity-50-hover text-decoration-none" href="/register">ثبت نام کنید</a>
+                </p>
+
+                <p class="text-center">
+                    <a class="link-opacity-50-hover text-decoration-none" href="/reset-password">رمز عبور را فراموش کردم</a>
                 </p>
             </form>
         </div>
