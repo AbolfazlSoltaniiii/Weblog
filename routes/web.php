@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\Login\LoginController;
 use App\Http\Controllers\Auth\Register\RegisterController;
 use App\Http\Controllers\Auth\Logout\LogoutController;
+use App\Http\Controllers\Auth\ResetPassword\ResetPasswordController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Post\PostController;
 use App\Http\Controllers\DashboardController;
@@ -13,6 +14,10 @@ Route::post('register', [RegisterController::class, 'register']);
 
 Route::get('login', [LoginController::class, 'loginView'])->name('login');
 Route::post('login', [LoginController::class, 'login']);
+
+Route::get('reset-password', [ResetPasswordController::class, 'resetPasswordView'])->name('resetPassword');
+Route::post('reset-password', [ResetPasswordController::class, 'resetPassword']);
+Route::post('reset-password-link', [ResetPasswordController::class, 'getResetPasswordLink']);
 
 Route::post('logout', [LogoutController::class, 'logout']);
 
