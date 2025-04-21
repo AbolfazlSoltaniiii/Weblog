@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth\Register;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\Register\RegisterRequest;
-use App\User;
+use App\Services\User\UserService;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
@@ -14,7 +14,9 @@ use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
 {
-    public function __construct(private readonly User $user)
+    public function __construct(
+        protected readonly UserService $userService
+    )
     {
     }
 
@@ -29,7 +31,7 @@ class RegisterController extends Controller
 
         $data['password'] = Hash::make($data['password']);
 
-        $user = $this->user->create($data);
+        $user = $this->userService->create($data);
 
         Auth::login($user);
 
