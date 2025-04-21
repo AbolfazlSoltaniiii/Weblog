@@ -17,4 +17,11 @@ readonly class UserRepository
         return $this->user->query()
             ->create($data);
     }
+
+    public function updateByEmail($data, $email): int
+    {
+        return $this->user->query()
+            ->where('email', $email)
+            ->update($data);
+    }
 }

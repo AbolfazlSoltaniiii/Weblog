@@ -23,4 +23,13 @@ readonly class UserService
 
         return $this->userRepository->create($data);
     }
+
+    public function updateByEmail($data, $email): false|int
+    {
+        if (!isset($email)) {
+            return false;
+        }
+
+        return $this->userRepository->updateByEmail($data, $email);
+    }
 }
