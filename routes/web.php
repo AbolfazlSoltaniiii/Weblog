@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\Login\LoginController;
 use App\Http\Controllers\Auth\Register\RegisterController;
 use App\Http\Controllers\Auth\Logout\LogoutController;
 use App\Http\Controllers\Auth\ResetPassword\ResetPasswordController;
+use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Post\PostController;
 use App\Http\Controllers\DashboardController;
@@ -20,6 +21,8 @@ Route::post('reset-password', [ResetPasswordController::class, 'resetPassword'])
 Route::post('reset-password-link', [ResetPasswordController::class, 'getResetPasswordLink']);
 
 Route::post('logout', [LogoutController::class, 'logout']);
+
+Route::get('user', [UserController::class, 'index']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/', static function () {

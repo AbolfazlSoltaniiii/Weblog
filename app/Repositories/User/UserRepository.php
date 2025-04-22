@@ -3,6 +3,7 @@
 namespace App\Repositories\User;
 
 use App\User;
+use Illuminate\Database\Eloquent\Collection;
 
 readonly class UserRepository
 {
@@ -10,6 +11,11 @@ readonly class UserRepository
         protected User $user
     )
     {
+    }
+
+    public function index(): Collection
+    {
+        return $this->user->all();
     }
 
     public function create($data)

@@ -3,6 +3,7 @@
 namespace App\Services\User;
 
 use App\Repositories\User\UserRepository;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Validator;
 
 readonly class UserService
@@ -11,6 +12,11 @@ readonly class UserService
         protected UserRepository $userRepository
     )
     {
+    }
+
+    public function index(): Collection
+    {
+        return $this->userRepository->index();
     }
 
     public function create($data)
