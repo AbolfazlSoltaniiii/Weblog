@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Post;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\PostStatus\PostStatusController;
-use App\Http\Controllers\PostUser\PostUserController;
 use App\Http\Requests\Post\PostRequest;
 use App\Http\Resources\Post\PostResource;
-use App\Post;
+use App\Services\Post\PostService;
+use App\Services\PostStatus\PostStatusService;
+use App\Services\PostUser\PostUserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -15,17 +15,16 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use JsonException;
-use function PHPUnit\TestFixture\func;
 
 class PostController extends Controller
 {
     protected mixed $request;
 
     public function __construct(
-        Request                               $request,
-        private readonly Post                 $post,
-        private readonly PostUserController   $postUserController,
-        private readonly PostStatusController $postStatusController
+        Request                              $request,
+        private readonly PostService         $postService,
+        protected readonly PostStatusService $postStatusService,
+        protected readonly PostUserService   $postUserService
     )
     {
         $this->request = $request;
@@ -36,17 +35,10 @@ class PostController extends Controller
      */
     public function index(): AnonymousResourceCollection
     {
-        $userId = Auth::user()?->id;
-
         $request = json_decode($this->request->getContent(), true, 512, JSON_THROW_ON_ERROR);
         $status = $request['status'] ?? null;
 
-        $result = $this->post->with(['postStatus', 'postUser.users'])
-            ->whereHas('postStatus', fn($query) => $query->where('code', $status))
-            ->when($userId !== 1, function ($q) use ($userId) {
-                $q->whereHas('postUser', fn($query) => $query->where('user_id', $userId));
-            })
-            ->get();
+        $result = $this->postService->index($status);
 
         return PostResource::collection($result);
     }
@@ -63,15 +55,15 @@ class PostController extends Controller
             $title = $attributes['title'] ?? null;
 
             $postStatusCode = $request['status'] ?? null;
-            $postStatusId = $this->postStatusController->getByCode($postStatusCode)?->id;
+            $postStatusId = $this->postStatusService->getByCode($postStatusCode)?->id;
 
-            $post = $this->post->query()->create([
+            $post = $this->postService->create([
                 'post_status_id' => $postStatusId,
                 'title' => $title,
                 'content' => $attributes['content'] ?? null,
             ]);
 
-            $this->postUserController->store([
+            $this->postUserService->create([
                 'post_id' => $post?->id,
                 'user_id' => $userId
             ]);
@@ -93,36 +85,20 @@ class PostController extends Controller
         }
     }
 
-    public function update(PostRequest $request, $id): ?bool
+    public function update(PostRequest $request, int $id): ?bool
     {
         $postStatusCode = $request['status'] ?? null;
-        $postStatusId = $this->postStatusController->getByCode($postStatusCode)?->id;
+        $postStatusId = $this->postStatusService->getByCode($postStatusCode)?->id;
 
-        return $this->post->query()
-            ->find($id)
-            ?->update([
-                'title' => $request['title'] ?? null,
-                'post_status_id' => $postStatusId,
-                'content' => $request['content'] ?? null,
-            ]);
+        return $this->postService->update([
+            'title' => $request['title'] ?? null,
+            'post_status_id' => $postStatusId,
+            'content' => $request['content'] ?? null,
+        ], $id);
     }
 
-    public function destroy($id): ?bool
+    public function destroy(int $id): ?bool
     {
-        return $this->post->query()
-            ->find($id)
-            ?->delete();
-    }
-
-    public function getCountForDashboard($status = null): string
-    {
-        $result = $this->post->query()
-            ->select(DB::raw('count(*) as count'))
-            ->when(isset($status), function ($q) use ($status) {
-                $q->whereHas('postStatus', fn($query) => $query->where('code', $status));
-            })
-            ->first();
-
-        return (string)$result?->count;
+        return $this->postService->delete($id);
     }
 }

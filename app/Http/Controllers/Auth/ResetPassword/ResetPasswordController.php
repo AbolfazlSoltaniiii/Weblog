@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth\ResetPassword;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\ResetPassword\ResetPasswordRequest;
 use App\Mail\SendVerificationCode;
-use App\User;
+use App\Services\User\UserService;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
@@ -17,6 +17,12 @@ use Illuminate\Support\Facades\Mail;
 
 class ResetPasswordController extends Controller
 {
+    public function __construct(
+        protected readonly UserService $userService
+    )
+    {
+    }
+
     public function resetPasswordView(): View|Factory|Application
     {
         return view('login.resetPassword.resetPassword');
@@ -29,11 +35,9 @@ class ResetPasswordController extends Controller
         $email = $data['email'];
         $password = $data['password'];
 
-        User::query()
-            ->where('email', $email)
-            ->update([
-                'password' => Hash::make($password)
-            ]);
+        $this->userService->updateByEmail([
+            'password' => Hash::make($password)
+        ], $email);
 
         return redirect('/login')->with([
             'resetPassword' => true
@@ -46,10 +50,10 @@ class ResetPasswordController extends Controller
             'email' => 'required|string|email|exists:users'
         ]);
 
-        $email = $request->all()['email'];
+        $email = $request->only('email')['email'];
 
         Mail::to($email)->send(new SendVerificationCode($email));
 
-        return back()->with('success', 'Password changed successfully.');
+        return back()->with('success', 'Reset password link sent successfully.');
     }
 }
