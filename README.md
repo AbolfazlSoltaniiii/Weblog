@@ -4,7 +4,7 @@
 
 <h3>All steps to initialize NashrYar:</h3>
 <ol>
-    <li>Clone project in <strong>GitHub</strong> with this address <a href="https://github.com/AbolfazlSoltaniiii/NashrYar.git">https://github.com/AbolfazlSoltaniiii/NashrYar.git</a>.</li>
+    <li>Clone project in <strong>GitHub</strong> with this address <a target="_blank" href="https://github.com/AbolfazlSoltaniiii/NashrYar.git">https://github.com/AbolfazlSoltaniiii/NashrYar.git</a>.</li>
     <li>Install the composer to add packages into vendor directory.</li>
     <li>Generate new app key from your project.</li>
     <li>Create .env file that copy with example of it.</li>
