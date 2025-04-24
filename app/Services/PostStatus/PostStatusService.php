@@ -16,4 +16,9 @@ readonly class PostStatusService
     {
         return $this->postStatusRepository->getByCode($code);
     }
+
+    public function insert(array $data): bool
+    {
+        return $this->postStatusRepository->insert($data);
+    }
 }

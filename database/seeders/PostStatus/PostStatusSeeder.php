@@ -1,27 +1,22 @@
 <?php
 
-namespace App\Console\Commands;
+namespace Database\Seeders\PostStatus;
 
-use App\PostStatus;
-use Illuminate\Console\Command;
+use App\Services\PostStatus\PostStatusService;
+use Illuminate\Database\Seeder;
 
-class PostStatusCommand extends Command
+class PostStatusSeeder extends Seeder
 {
-    protected $signature = 'app:required-post-status';
-
-    protected $description = 'Command for create required postStatus that needs';
-
-    public function handle()
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
     {
-        $postStatus = resolve(PostStatus::class);
+        $postStatus = resolve(PostStatusService::class);
 
         $data = $this->getPostStatusData();
 
-        $result = $postStatus->insert($data);
-
-        $this->info("post status created successfully");
-
-        return $result;
+        $postStatus->insert($data);
     }
 
     public function getPostStatusData(): array

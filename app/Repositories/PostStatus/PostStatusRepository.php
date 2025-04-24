@@ -18,4 +18,10 @@ readonly class PostStatusRepository
             ->where('code', $code)
             ->sole();
     }
+
+    public function insert(array $data): bool
+    {
+        return $this->postStatus->query()
+            ->insert($data);
+    }
 }
