@@ -22,7 +22,7 @@ Route::post('reset-password-link', [ResetPasswordController::class, 'getResetPas
 
 Route::post('logout', [LogoutController::class, 'logout']);
 
-Route::get('user', [UserController::class, 'index']);
+Route::get('users/index', [UserController::class, 'index']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/', static function () {
