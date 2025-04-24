@@ -12,11 +12,18 @@ return new class extends Migration {
     {
         Schema::create('posts', static function (Blueprint $table) {
             $table->id();
-            $table->foreignId('post_status_id');
-            $table->string('title');
-            $table->text('content');
+
+            $table->foreign('post_status_id')->references('id')->on('post_status')
+                ->cascadeOnUpdate()->cascadeOnDelete();
+
+            $table->foreignId('post_status_id')->comment('وضعیت پست');
+            $table->string('title', 200)->comment('عنوان');
+            $table->text('content')->nullable()->comment('محتوای پست');
+
             $table->timestamps();
             $table->softDeletes();
+
+            $table->comment('پست ها');
         });
     }
 

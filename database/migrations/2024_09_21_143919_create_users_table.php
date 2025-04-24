@@ -12,11 +12,15 @@ return new class extends Migration {
     {
         Schema::create('users', static function (Blueprint $table) {
             $table->id();
-            $table->string('username');
-            $table->string('password');
-            $table->string('email')->unique();
+
+            $table->string('username', 200)->comment('نام کاربری');
+            $table->string('password', 150)->comment('گذرواژه');
+            $table->string('email', 250)->comment('ایمیل')->unique();
+
             $table->timestamps();
             $table->softDeletes();
+
+            $table->comment('کاربران');
         });
     }
 

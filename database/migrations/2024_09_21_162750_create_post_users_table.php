@@ -14,23 +14,18 @@ return new class extends Migration {
             $table->id();
             $table->unsignedBigInteger('user_id')->comment('شناسه کاربر');
             $table->unsignedBigInteger('post_id')->comment('شناسه پست');
-            $table->comment('جدول واسط پست ها و کاربرانی ثبت کرده آنها');
 
             // set foreign key
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('users')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')
+                ->cascadeOnUpdate()->cascadeOnDelete();
 
-            $table->foreign('post_id')
-                ->references('id')
-                ->on('posts')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+            $table->foreign('post_id')->references('id')->on('posts')
+                ->cascadeOnUpdate()->cascadeOnDelete();
 
             // set unique columns
             $table->unique(['user_id', 'post_id']);
+
+            $table->comment('جدول واسط پست ها و کاربران ثبت کننده آنها');
         });
     }
 
