@@ -13,10 +13,14 @@ return new class extends Migration
     {
         Schema::create('post_status', static function (Blueprint $table) {
             $table->id();
-            $table->integer('code')->comment('کد');
-            $table->string('title')->comment('عنوان');
+
+            $table->string('code', 100)->comment('کد');
+            $table->string('title', 150)->comment('عنوان');
+
             $table->timestamps();
             $table->softDeletes();
+
+            $table->comment('وضعیت پست');
         });
     }
 
