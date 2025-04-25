@@ -26,6 +26,7 @@ class LoginController extends Controller
         $userName = $request->username ?? null;
         $password = $request->password ?? null;
 
+        // check user information exists and login
         if (Auth::attempt(['username' => $userName, 'password' => $password])) {
             $request->session()->regenerate();
 

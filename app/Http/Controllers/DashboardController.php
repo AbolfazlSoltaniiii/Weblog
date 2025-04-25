@@ -17,6 +17,7 @@ class DashboardController extends Controller
 
     public function view(): View|Factory|Application
     {
+        // get count of posts by status code
         $approvedPosts = $this->postService->getCountForDashboard('approved');
         $pendingPosts = $this->postService->getCountForDashboard('pending');
         $rejectedPosts = $this->postService->getCountForDashboard('rejected');

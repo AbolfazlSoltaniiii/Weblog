@@ -45,6 +45,7 @@ class PostController extends Controller
 
     public function store(PostRequest $request): JsonResponse
     {
+        // use transaction to manage create operations
         DB::beginTransaction();
 
         try {

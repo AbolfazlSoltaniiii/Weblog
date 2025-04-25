@@ -26,6 +26,7 @@ readonly class UserRepository
 
     public function updateByEmail($data, $email): int
     {
+        // update user data by that email
         return $this->user->query()
             ->where('email', $email)
             ->update($data);

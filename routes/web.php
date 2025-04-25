@@ -22,8 +22,10 @@ Route::post('reset-password-link', [ResetPasswordController::class, 'getResetPas
 
 Route::post('logout', [LogoutController::class, 'logout']);
 
+//for get list of users
 Route::get('users/index', [UserController::class, 'index']);
 
+// for posts that contains authentication
 Route::middleware('auth')->group(function () {
     Route::get('/', static function () {
         return view('app');
