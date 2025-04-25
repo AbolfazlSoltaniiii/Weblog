@@ -21,6 +21,7 @@ readonly class UserService
 
     public function create($data)
     {
+        // validate data before create user
         Validator::validate($data, [
             'username' => 'required|string|unique:users|max:200',
             'password' => 'required|string|min:8',

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth\ResetPassword;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\ResetPassword\ResetPasswordRequest;
-use App\Mail\SendVerificationCode;
+use App\Mail\SendResetPasswordLink;
 use App\Services\User\UserService;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -52,7 +52,8 @@ class ResetPasswordController extends Controller
 
         $email = $request->only('email')['email'];
 
-        Mail::to($email)->send(new SendVerificationCode($email));
+        // send email for reset password
+        Mail::to($email)->send(new SendResetPasswordLink($email));
 
         return back()->with('success', 'Reset password link sent successfully.');
     }

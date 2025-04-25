@@ -15,6 +15,7 @@ class LogoutController extends Controller
     {
         Auth::logout();
 
+        // reset user session for logout
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 

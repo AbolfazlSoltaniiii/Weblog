@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class SendVerificationCode extends Mailable
+class SendResetPasswordLink extends Mailable
 {
     use Queueable, SerializesModels;
 

@@ -33,6 +33,7 @@ class RegisterController extends Controller
 
         $user = $this->userService->create($data);
 
+        // login user after created that user
         Auth::login($user);
 
         return redirect()->route('/');
