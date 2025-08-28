@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Post;
 
+use App\Post;
+use App\PostStatus;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -12,11 +14,16 @@ class PostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status' => 'required|exists:post_status,code',
+            'status' => [
+                'required',
+                Rule::exists(PostStatus::class, 'code')
+                    ->whereNull('deleted_at')
+            ],
             'title' => [
                 'required',
                 'string',
-                Rule::unique('posts')->whereNull('deleted_at')
+                Rule::unique(Post::class)
+                    ->whereNull('deleted_at')
                     ->ignore($this->route('post'))
             ],
             'content' => 'nullable|string',
