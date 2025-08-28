@@ -4,7 +4,6 @@ namespace App\Services\User;
 
 use App\Repositories\User\UserRepository;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Validator;
 
 readonly class UserService
 {
@@ -21,13 +20,6 @@ readonly class UserService
 
     public function create($data)
     {
-        // validate data before create user
-        Validator::validate($data, [
-            'username' => 'required|string|unique:users|max:200',
-            'password' => 'required|string|min:8',
-            'email' => 'required|string|email|unique:users'
-        ]);
-
         return $this->userRepository->create($data);
     }
 
